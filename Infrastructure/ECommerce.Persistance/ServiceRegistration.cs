@@ -16,7 +16,7 @@ namespace ECommerce.Persistance
         public static void AddPersistanceServices(this IServiceCollection services, IConfiguration configuration)
         {
             //burada hangi db yi kullanacaksak onunla ilgili kütüphaneyi yüklememiz gerekiyor. Postgre ise postgre , mssql ise mssql, mongo ise mongo gibi.
-            services.AddDbContext<ECommerceAPIDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ECommerceDB")), ServiceLifetime.Singleton);
+            services.AddDbContext<ECommerceAPIDbContext>(options => options.UseSqlServer(Configuration.ConnectionString), ServiceLifetime.Singleton);
             services.AddScoped<ICustomerReadRepository, CustomerReadRepository>();
             services.AddScoped<ICustomerWriteRepository, CustomerWriteRepository>();
             services.AddScoped<IOrderReadRepository, OrderReadRepository>();
