@@ -31,8 +31,9 @@ namespace ECommerce.Persistance.Contexts
                 _ = item.State switch
                 {
                     EntityState.Added => item.Entity.CreatedDate = DateTime.Now,
-                    EntityState.Modified => 
-               item.Entity.UpdatedDate = DateTime.Now
+                    EntityState.Modified => item.Entity.UpdatedDate = DateTime.Now,
+                    _ => DateTime.Now
+                    //burada delete operasyonu gerçekleştiğinde silinmiş bir verinin de bu swicthden geçeceğini bildiğimiz için yaptık
                 };
             }
                 

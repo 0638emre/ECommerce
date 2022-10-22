@@ -1,9 +1,11 @@
 ﻿using ECommerce.Application.Repositories.CustomerRepository;
 using ECommerce.Application.Repositories.OrderRepository;
 using ECommerce.Application.Repositories.ProductRepository;
+using ECommerce.Application.ViewModels.Products;
 using ECommerce.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace ECommerce.WebAPI.Controllers
 {
@@ -28,13 +30,37 @@ namespace ECommerce.WebAPI.Controllers
             _customerWriteRepository = customerWriteRepository;
         }
 
-        [HttpGet]
-        public async Task YapBunu()
+        [HttpPost]
+        public async Task<IActionResult> AddProduct(VM_Create_Product model)
         {
-            Order order = await _orderReadRepository.GetByIdAsync("E9BD521E-93DF-4526-92B4-08DA87418CE4");
-            order.Address = "ANKARA";
-            await _orderWriteRepository.SaveAsync();
-        }
+            await _productWriteRepository.AddAsync(new()
+            {
+                Name = model.Name,
+                Price = model.Price,
+                Stock = model.Stock
+            });
+            await _productWriteRepository.SaveAsync();
 
+            return StatusCode((int)HttpStatusCode.Created);
+        }
+        [HttpPut]
+        public async Task<IActionResult> UpdateProduct(VM_Update_Product model)
+        {
+            Product product = await _productReadRepository.GetByIdAsync(model.Id);
+            product.Stock = model.Stock;
+            product.Name = model.Name;
+            product.Price = model.Price;
+            await _productWriteRepository.SaveAsync();
+
+            return Ok();
+        }
+        [HttpDelete("delete")]
+        public async Task<IActionResult> Delete(string Id)
+        {
+            await _productWriteRepository.RemoveAsync(Id);
+            await _productWriteRepository.SaveAsync();
+
+            return Ok();
+        }
     }
 }

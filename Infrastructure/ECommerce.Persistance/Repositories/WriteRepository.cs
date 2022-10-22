@@ -42,7 +42,6 @@ namespace ECommerce.Persistance.Repositories
         {
             T model = await Table.FirstOrDefaultAsync(data => data.Id == Guid.Parse(id));
             return Remove(model);
-             
         }
 
         public bool RemoveRange(List<T> datas)
