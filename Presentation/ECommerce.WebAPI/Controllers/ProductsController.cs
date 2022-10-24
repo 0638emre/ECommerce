@@ -30,6 +30,20 @@ namespace ECommerce.WebAPI.Controllers
             _customerWriteRepository = customerWriteRepository;
         }
 
+        [HttpGet]
+        public async Task<ActionResult> GetAllProducts()
+        {
+            return Ok(_productReadRepository.GetAll(false).Select(p => new
+            {
+                p.Id,
+                p.Name,
+                p.Stock,
+                p.Price,
+                p.CreatedDate,
+                p.UpdatedDate
+            }));
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddProduct(VM_Create_Product model)
         {
