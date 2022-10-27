@@ -33,6 +33,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpLogging();
+
+app.UseStaticFiles();
 app.UseCors();
 app.UseHttpsRedirection();
 

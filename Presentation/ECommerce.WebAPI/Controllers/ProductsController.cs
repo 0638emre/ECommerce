@@ -21,7 +21,9 @@ namespace ECommerce.WebAPI.Controllers
         readonly private ICustomerReadRepository _customerReadRepository;
         readonly private ICustomerWriteRepository _customerWriteRepository;
 
-        public ProductsController(IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository, IOrderReadRepository orderReadRepository, IOrderWriteRepository orderWriteRepository, ICustomerReadRepository customerReadRepository, ICustomerWriteRepository customerWriteRepository)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public ProductsController(IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository, IOrderReadRepository orderReadRepository, IOrderWriteRepository orderWriteRepository, ICustomerReadRepository customerReadRepository, ICustomerWriteRepository customerWriteRepository, IWebHostEnvironment webHostEnvironment)
         {
             _productWriteRepository = productWriteRepository;
             _productReadRepository = productReadRepository;
@@ -29,6 +31,7 @@ namespace ECommerce.WebAPI.Controllers
             _orderWriteRepository = orderWriteRepository;
             _customerReadRepository = customerReadRepository;
             _customerWriteRepository = customerWriteRepository;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet]
@@ -69,6 +72,7 @@ namespace ECommerce.WebAPI.Controllers
 
             return StatusCode((int)HttpStatusCode.Created);
         }
+
         [HttpPut]
         public async Task<IActionResult> UpdateProduct(VM_Update_Product model)
         {
@@ -80,13 +84,38 @@ namespace ECommerce.WebAPI.Controllers
 
             return Ok();
         }
-        [HttpDelete("delete")]
+
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string Id)
         {
             await _productWriteRepository.RemoveAsync(Id);
             await _productWriteRepository.SaveAsync();
 
             return Ok();
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Upload()
+        {
+            string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "resource/product-images");
+
+            if (!Directory.Exists(uploadPath))
+                Directory.CreateDirectory(uploadPath);
+            
+
+            Random random = new Random();
+            foreach (IFormFile file in Request.Form.Files)
+            {
+                string fullPath = Path.Combine(uploadPath, $"{random.NextDouble()}{Path.GetExtension(file.FileName)}");
+
+                using FileStream fileStream = new(fullPath, FileMode.Create, FileAccess.Write, FileShare.None, 1024*1024, useAsync: false);
+
+                await file.CopyToAsync(fileStream);
+                await fileStream.FlushAsync();
+            }
+
+            return Ok();
+            
         }
     }
 }
