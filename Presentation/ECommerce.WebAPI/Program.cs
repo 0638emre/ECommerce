@@ -1,4 +1,5 @@
 using ECommerce.Application.Validators.Products;
+using ECommerce.Infrastructure;
 using ECommerce.Infrastructure.Filters;
 using ECommerce.Persistance;
 using FluentValidation.AspNetCore;
@@ -9,8 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
     policy.WithOrigins("http://localhost:4200", "https://localhost:4200").AllowAnyHeader().AllowAnyMethod().AllowCredentials()
 ));
+
+//IOCler
 builder.Services.AddPersistanceServices(builder.Configuration);
 //AddPersistanceServices tarafýmýzdan extension metot olarak persistance katmaný altýnda yazýldý. Buradaki amaç api katmanýnda istediðimiz bir servisi çaðýrarak kullanmak-
+builder.Services.AddInfrastructureServices();
 
 builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>())
     .AddFluentValidation(configuration => configuration.RegisterValidatorsFromAssemblyContaining<CreateProductValidator>())
