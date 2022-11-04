@@ -1,6 +1,7 @@
 using ECommerce.Application.Validators.Products;
 using ECommerce.Infrastructure;
 using ECommerce.Infrastructure.Filters;
+using ECommerce.Infrastructure.Services.Storage.Local;
 using ECommerce.Persistance;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -15,6 +16,11 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
 builder.Services.AddPersistanceServices(builder.Configuration);
 //AddPersistanceServices tarafýmýzdan extension metot olarak persistance katmaný altýnda yazýldý. Buradaki amaç api katmanýnda istediðimiz bir servisi çaðýrarak kullanmak-
 builder.Services.AddInfrastructureServices();
+
+//builder.Services.Add(StorageType.Azure);
+//builder.Services.AddStorage(ECommerce.Infrastructure.Enums.StorageType.Local); // bu þekilde de mimari ne ile çalýþacaksa storage olarak onu enum üzerinden seçebiliriz.
+builder.Services.AddStorage<LocalStorage>();
+
 
 builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>())
     .AddFluentValidation(configuration => configuration.RegisterValidatorsFromAssemblyContaining<CreateProductValidator>())
