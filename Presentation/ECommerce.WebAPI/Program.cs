@@ -1,6 +1,7 @@
 using ECommerce.Application.Validators.Products;
 using ECommerce.Infrastructure;
 using ECommerce.Infrastructure.Filters;
+using ECommerce.Infrastructure.Services.Storage.Azure;
 using ECommerce.Infrastructure.Services.Storage.Local;
 using ECommerce.Persistance;
 using FluentValidation.AspNetCore;
@@ -19,7 +20,8 @@ builder.Services.AddInfrastructureServices();
 
 //builder.Services.Add(StorageType.Azure);
 //builder.Services.AddStorage(ECommerce.Infrastructure.Enums.StorageType.Local); // bu þekilde de mimari ne ile çalýþacaksa storage olarak onu enum üzerinden seçebiliriz.
-builder.Services.AddStorage<LocalStorage>();
+//builder.Services.AddStorage<LocalStorage>();
+builder.Services.AddStorage<AzureStorage>();
 
 
 builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>())

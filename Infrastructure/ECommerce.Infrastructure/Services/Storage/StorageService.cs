@@ -1,7 +1,7 @@
 ﻿using ECommerce.Application.Abstraction.Storage;
 using Microsoft.AspNetCore.Http;
 
-namespace ECommerce.Infrastructure.Services
+namespace ECommerce.Infrastructure.Services.Storage
 {
     public class StorageService : IStorageService
     {
