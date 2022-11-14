@@ -1,3 +1,4 @@
+using ECommerce.Application;
 using ECommerce.Application.Validators.Products;
 using ECommerce.Infrastructure;
 using ECommerce.Infrastructure.Filters;
@@ -17,6 +18,7 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
 builder.Services.AddPersistanceServices(builder.Configuration);
 //AddPersistanceServices tarafýmýzdan extension metot olarak persistance katmaný altýnda yazýldý. Buradaki amaç api katmanýnda istediðimiz bir servisi çaðýrarak kullanmak-
 builder.Services.AddInfrastructureServices();
+builder.Services.AddApplicationServices();
 
 //builder.Services.Add(StorageType.Azure);
 //builder.Services.AddStorage(ECommerce.Infrastructure.Enums.StorageType.Local); // bu þekilde de mimari ne ile çalýþacaksa storage olarak onu enum üzerinden seçebiliriz.
