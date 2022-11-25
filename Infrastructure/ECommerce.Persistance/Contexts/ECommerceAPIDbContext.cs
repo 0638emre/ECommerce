@@ -7,11 +7,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ECommerce.Domain.Entities.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace ECommerce.Persistance.Contexts
 {
-    public class ECommerceAPIDbContext : DbContext
+    //public class ECommerceAPIDbContext : DbContext projemize identity kurduğumuz için aşağıdaki dbcontext üzerinden devam ediyoruz bunun sebebi identity classlarını da görsün db set olarak
+    public class ECommerceAPIDbContext : IdentityDbContext<AppUser, AppRole, string>
     {
+        //burada IdentityDbContext ile Identity bussiness işlerini yapacak olan repositoryi de yazmış oluyoruz. Ayrıca bir repository yazmaya gerek kalmamaktadır. Çünkü bu asp.net.core.identity içerinde zaten yazılmıştır.
         public ECommerceAPIDbContext(DbContextOptions options) : base(options)
         {
 
