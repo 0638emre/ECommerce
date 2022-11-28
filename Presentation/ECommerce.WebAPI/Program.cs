@@ -1,3 +1,4 @@
+using System.Text;
 using ECommerce.Application;
 using ECommerce.Application.Validators.Products;
 using ECommerce.Infrastructure;
@@ -6,7 +7,10 @@ using ECommerce.Infrastructure.Services.Storage.Azure;
 using ECommerce.Infrastructure.Services.Storage.Local;
 using ECommerce.Persistance;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 //IOC Container
@@ -35,7 +39,55 @@ builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>
 
 
 builder.Services.AddEndpointsApiExplorer();
+
+//swagger ayarlarýný buradan config ediyoruz
+//builder.Services.AddSwaggerGen(options =>
+//{
+//    options.SwaggerDoc("ECommerceVersion1", new OpenApiInfo
+//    { Title = "ECommerce API", Version = "V1"});
+//    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+//    {
+//        In = ParameterLocation.Header,
+//        Description = "Lütfen token giriniz",
+//        Name = "Authorization",
+//        Type = SecuritySchemeType.Http,
+//        BearerFormat = "JWT",
+//        Scheme = "bearer"
+//    });
+
+//    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+//    {
+//        {
+//            new OpenApiSecurityScheme
+//            {
+//                Reference = new OpenApiReference
+//                {
+//                    Type=ReferenceType.SecurityScheme,
+//                    Id="Bearer"
+//                }
+//            },
+//            new string[]{}
+//        }
+//    });
+//});
 builder.Services.AddSwaggerGen();
+
+//jwt configirasyonu BURASI OLUÞAN BÝR TOKEN I OKUMAK ÝÇÝN GEREKLÝ OLAN KONFÝGURASYONDUR
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer("Admin",options =>
+    {
+        options.TokenValidationParameters = new()
+        {
+            ValidateAudience = true, //oluþturulacak token deðerini kimlerin hangi originlerin hangi web sitelerinin kullanýlacaðýný belirleriz
+            ValidateIssuer = true, // oluþturulacak toekn deðerini kimin daðýttýðýný ifade edeceðimiz alandýr.
+            ValidateLifetime = true, //oluþturulacak token deðerinin süresini tutacak alandýr
+            ValidateIssuerSigningKey = true, //oluþturulacak token deðerinin uygulamamýza ait bir deðer olduðunu ifade eden security keydir.
+            ValidAudience = builder.Configuration["Token:Audience"],
+            ValidIssuer = builder.Configuration["Token:Issuer"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Token:SecurityKey"]))
+        };
+    });
+
 
 var app = builder.Build();
 

@@ -9,11 +9,13 @@ using ECommerce.Application.Features.Queries.ProductImageFile.GetProductImage;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ECommerce.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Admin")] //login olmuş mu bu kullanıcı yetkisi var mı bunu kontrol ederiz. 200 ok. 401 unauthrize 
     public class ProductsController : ControllerBase
     {
         readonly IMediator _mediator;

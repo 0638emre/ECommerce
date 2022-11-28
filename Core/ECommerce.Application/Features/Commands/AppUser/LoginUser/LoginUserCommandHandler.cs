@@ -1,4 +1,6 @@
-﻿using ECommerce.Application.Exceptions;
+﻿using ECommerce.Application.Abstraction.Token;
+using ECommerce.Application.DTOs;
+using ECommerce.Application.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
@@ -7,12 +9,14 @@ namespace ECommerce.Application.Features.Commands.AppUser.LoginUser
     public class LoginUserCommandHandler : IRequestHandler<LoginUserCommandRequest, LoginUserCommandResponse>
     {
         readonly UserManager<Domain.Entities.Identity.AppUser> _userManager;
-        private readonly SignInManager<Domain.Entities.Identity.AppUser> _signInManager;
+        readonly SignInManager<Domain.Entities.Identity.AppUser> _signInManager;
+        readonly ITokenHandler _tokenHandler;
 
-        public LoginUserCommandHandler(SignInManager<Domain.Entities.Identity.AppUser> signInManager, UserManager<Domain.Entities.Identity.AppUser> userManager)
+        public LoginUserCommandHandler(SignInManager<Domain.Entities.Identity.AppUser> signInManager, UserManager<Domain.Entities.Identity.AppUser> userManager, ITokenHandler tokenHandler)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _tokenHandler = tokenHandler;
         }
         public async Task<LoginUserCommandResponse> Handle(LoginUserCommandRequest request, CancellationToken cancellationToken)
         {
@@ -22,17 +26,28 @@ namespace ECommerce.Application.Features.Commands.AppUser.LoginUser
                 user = await _userManager.FindByEmailAsync(request.UsernameOrEmail);
 
             if (user == null)
-                throw new NotFoundUserException("Kullanıcı adı veya parola hatalı.");
+                throw new NotFoundUserException();
 
 
             SignInResult result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
             if (result.Succeeded) //eğer true ise Authentication başarılı demektir.
             {
-                //TODO: burada yetkiler belirlenecek.
+                Token token = _tokenHandler.CreateAccessToken(5);
+                
+                return new LoginUserSuccessCommandResponse()
+                {
+                    Token = token
+                };
             }
 
-            return new();
+            //return new LoginUserErrorCommandResponse()
+            //{
+            //    Message = "Kullanıcı adı veya şifre hatalı..."
+            //};
+
+            throw new AuthenticationErrorException();
+
         }
     }
 }
