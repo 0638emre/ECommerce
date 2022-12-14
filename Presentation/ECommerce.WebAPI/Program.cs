@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text;
 using ECommerce.Application;
 using ECommerce.Application.Validators.Products;
@@ -13,17 +14,17 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 //IOC Container
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
-    policy.WithOrigins("http://localhost:4401", "https://localhost:4401").AllowAnyHeader().AllowAnyMethod().AllowCredentials()
+    policy.WithOrigins("http://localhost:4401", "https://localhost:4401", "http://localhost:4200", "https://localhost:4200").AllowAnyHeader().AllowAnyMethod().AllowCredentials()
 ));
 
 //IOCler
 builder.Services.AddPersistanceServices(builder.Configuration);
-//AddPersistanceServices tarafýmýzdan extension metot olarak persistance katmaný altýnda yazýldý. Buradaki amaç api katmanýnda istediðimiz bir servisi çaðýrarak kullanmak-
+//AddPersistanceServices tarafï¿½mï¿½zdan extension metot olarak persistance katmanï¿½ altï¿½nda yazï¿½ldï¿½. Buradaki amaï¿½ api katmanï¿½nda istediï¿½imiz bir servisi ï¿½aï¿½ï¿½rarak kullanmak-
 builder.Services.AddInfrastructureServices();
 builder.Services.AddApplicationServices();
 
 //builder.Services.Add(StorageType.Azure);
-//builder.Services.AddStorage(ECommerce.Infrastructure.Enums.StorageType.Local); // bu þekilde de mimari ne ile çalýþacaksa storage olarak onu enum üzerinden seçebiliriz.
+//builder.Services.AddStorage(ECommerce.Infrastructure.Enums.StorageType.Local); // bu ï¿½ekilde de mimari ne ile ï¿½alï¿½ï¿½acaksa storage olarak onu enum ï¿½zerinden seï¿½ebiliriz.
 //builder.Services.AddStorage<LocalStorage>();
 builder.Services.AddStorage<AzureStorage>();
 
@@ -31,14 +32,14 @@ builder.Services.AddStorage<AzureStorage>();
 builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>())
     .AddFluentValidation(configuration => configuration.RegisterValidatorsFromAssemblyContaining<CreateProductValidator>())
     .ConfigureApiBehaviorOptions(options=> options.SuppressModelStateInvalidFilter = true);
-//burada fluent val. ile gelen isteðin bizim tuttuðumuz rule lara uygun olup olmadýðýna bakarak cliente bilgi verir. Validation application katmanýnda olduðundan oradaki herhani bir validators class vermemiz yeterli olacaktýr. diðer validator class larý vermemize gerek yoktur. tanýr.
-//Validation Filter (infrastruxter katmanýndan devreye giriyor ki her gelen istek o filtreden geçsin. handle olsun.)
+//burada fluent val. ile gelen isteï¿½in bizim tuttuï¿½umuz rule lara uygun olup olmadï¿½ï¿½ï¿½na bakarak cliente bilgi verir. Validation application katmanï¿½nda olduï¿½undan oradaki herhani bir validators class vermemiz yeterli olacaktï¿½r. diï¿½er validator class larï¿½ vermemize gerek yoktur. tanï¿½r.
+//Validation Filter (infrastruxter katmanï¿½ndan devreye giriyor ki her gelen istek o filtreden geï¿½sin. handle olsun.)
 
 
 
 builder.Services.AddEndpointsApiExplorer();
 
-//swagger ayarlarýný buradan config ediyoruz
+//swagger ayarlarï¿½nï¿½ buradan config ediyoruz
 builder.Services.AddSwaggerGen(option =>
 {
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "ECommerce API", Version = "v1" });
@@ -68,19 +69,23 @@ builder.Services.AddSwaggerGen(option =>
 });
 //builder.Services.AddSwaggerGen();
 
-//jwt configirasyonu BURASI OLUÞAN BÝR TOKEN I OKUMAK ÝÇÝN GEREKLÝ OLAN KONFÝGURASYONDUR
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer("Admin",options =>
+    .AddJwtBearer("Admin", options =>
     {
         options.TokenValidationParameters = new()
         {
-            ValidateAudience = true, //oluþturulacak token deðerini kimlerin hangi originlerin hangi web sitelerinin kullanýlacaðýný belirleriz
-            ValidateIssuer = true, // oluþturulacak toekn deðerini kimin daðýttýðýný ifade edeceðimiz alandýr.
-            ValidateLifetime = true, //oluþturulacak token deðerinin süresini tutacak alandýr
-            ValidateIssuerSigningKey = true, //oluþturulacak token deðerinin uygulamamýza ait bir deðer olduðunu ifade eden security keydir.
+            ValidateAudience = true, //OluÃ¾turulacak token deÃ°erini kimlerin/hangi originlerin/sitelerin kullanÃ½cÃ½ belirlediÃ°imiz deÃ°erdir. -> www.bilmemne.com
+            ValidateIssuer = true, //OluÃ¾turulacak token deÃ°erini kimin daÃ°Ã½ttÃ½nÃ½ ifade edeceÃ°imiz alandÃ½r. -> www.myapi.com
+            ValidateLifetime = true, //OluÃ¾turulan token deÃ°erinin sÃ¼resini kontrol edecek olan doÃ°rulamadÃ½r.
+            ValidateIssuerSigningKey = true, //Ãœretilecek token deÃ°erinin uygulamamÃ½za ait bir deÃ°er olduÃ°unu ifade eden suciry key verisinin doÃ°rulanmasÃ½dÃ½r.
+
             ValidAudience = builder.Configuration["Token:Audience"],
             ValidIssuer = builder.Configuration["Token:Issuer"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Token:SecurityKey"]))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Token:SecurityKey"])),
+            LifetimeValidator = (notBefore, expires, securityToken, validationParameters) => expires != null ? expires > DateTime.UtcNow : false,
+
+            // NameClaimType = ClaimTypes.Name //JWT Ã¼zerinde Name claimne karÃ¾Ã½lÃ½k gelen deÃ°eri User.Identity.Name propertysinden elde edebiliriz.
         };
     });
 

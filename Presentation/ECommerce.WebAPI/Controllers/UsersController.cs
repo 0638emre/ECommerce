@@ -19,7 +19,7 @@ namespace ECommerce.WebAPI.Controllers
         public async Task<IActionResult> CreateUser(CreateUserCommandRequest createUserCommandRequest)
         {
             CreateUserCommandResponse response = await _mediator.Send(createUserCommandRequest);
-            return Ok(response);
+            return Ok(value: response);
         }
     }
 }

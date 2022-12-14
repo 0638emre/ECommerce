@@ -1,9 +1,13 @@
-﻿using ECommerce.Persistance.Contexts;
+﻿using ECommerce.Application.Abstraction;
+using ECommerce.Application.Abstraction.Services;
+using ECommerce.Application.Abstraction.Services.Authentications;
+using ECommerce.Persistance.Contexts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using ECommerce.Persistance.Repositories.CustomerRepository;
 using ECommerce.Application.Repositories.CustomerRepository;
+using ECommerce.Application.Repositories.EndpointRepository;
 using ECommerce.Application.Repositories.OrderRepository;
 using ECommerce.Persistance.Repositories.OrderRepository;
 using ECommerce.Application.Repositories.ProductRepository;
@@ -13,8 +17,12 @@ using ECommerce.Application.Repositories.FileRepository;
 using ECommerce.Persistance.Repositories.FileRepository;
 using ECommerce.Persistance.Repositories.ProductImageRepository;
 using ECommerce.Application.Repositories.InvoiceFile;
+using ECommerce.Application.Repositories.MenuRepository;
 using ECommerce.Domain.Entities.Identity;
+using ECommerce.Persistance.Repositories.EndpointRepository;
 using ECommerce.Persistance.Repositories.InvoiceFileRepository;
+using ECommerce.Persistance.Repositories.MenuRepository;
+using ECommerce.Persistance.Services;
 
 namespace ECommerce.Persistance
 {
@@ -47,6 +55,29 @@ namespace ECommerce.Persistance
             services.AddScoped<IProductImageFileWriteRepository, ProductImageWriteRepository>();
             services.AddScoped<IInvoiceFileReadRepository, InvoiceFileReadRepository>();
             services.AddScoped<IInvoiceFileWriteRepository, InvoiceFileWriteRepository>();
+            // services.AddScoped<IBasketItemReadRepository, BasketItemReadRepository>();
+            // services.AddScoped<IBasketItemWriteRepository, BasketItemWriteRepository>();
+            // services.AddScoped<IBasketReadRepository, BasketReadRepository>();
+            // services.AddScoped<IBasketWriteRepository, BasketWriteRepository>();
+            // services.AddScoped<ICompletedOrderReadRepository, CompletedOrderReadRepository>();
+            // services.AddScoped<ICompletedOrderWriteRepository, CompletedOrderWriteRepository>();
+            services.AddScoped<IEndpointReadRepository, EndpointReadRepository>();
+            services.AddScoped<IEndpointWriteRepository, EndpointWriteRepository>();
+            services.AddScoped<IMenuReadRepository, MenuReadRepository>();
+            services.AddScoped<IMenuWriteRepository, MenuWriteRepository>();
+            
+            
+            
+            
+            
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IExternalAuthentication, AuthService>();
+            services.AddScoped<IInternalAuthentication, AuthService>();
+            // services.AddScoped<IBasketService, BasketService>();
+            // services.AddScoped<IOrderService, OrderService>();
+            // services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IAuthorizationEndpointService, AuthorizationEndpointService>();
         }
     }
 }

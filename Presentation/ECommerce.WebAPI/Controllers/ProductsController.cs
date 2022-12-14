@@ -30,14 +30,14 @@ namespace ECommerce.WebAPI.Controllers
         {
            GetAllProductQueryResponse response = await _mediator.Send(getAllProductQueryRequest);
 
-           return Ok(response);
+           return Ok(value: response);
         }
 
         [HttpGet("{Id}")]
         public async Task<IActionResult> Get([FromRoute] GetByIdProductQueryRequest getByIdProductQueryRequest)
         {
             GetByIdProductQueryResponse response = await _mediator.Send(getByIdProductQueryRequest);
-            return Ok(response);
+            return Ok(value: response);
         }
 
         [HttpPost]
@@ -78,7 +78,7 @@ namespace ECommerce.WebAPI.Controllers
         {
             List<GetProductImageQueryResponse> response = await _mediator.Send(getProductImageQueryRequest);
 
-            return Ok(response);
+            return Ok(value: response);
         }
 
         [HttpDelete("[action]/{Id}")]
