@@ -1,6 +1,7 @@
 ﻿using ECommerce.Application.Features.Commands.AppUser.FacebookLogin;
 using ECommerce.Application.Features.Commands.AppUser.GoogleLogin;
 using ECommerce.Application.Features.Commands.AppUser.LoginUser;
+using ECommerce.Application.Features.Commands.AppUser.RefreshTokenLogin;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +21,13 @@ namespace ECommerce.WebAPI.Controllers
         public async Task<IActionResult> Login(LoginUserCommandRequest loginUserCommandRequest)
         {
             LoginUserCommandResponse response = await _mediator.Send(loginUserCommandRequest);
+            return Ok(value: response);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> RefreshTokenLogin([FromBody] RefreshTokenLoginCommandRequest refreshTokenLoginCommandRequest)
+        {
+            RefreshTokenLoginCommandResponse response = await _mediator.Send(refreshTokenLoginCommandRequest);
             return Ok(value: response);
         }
 
