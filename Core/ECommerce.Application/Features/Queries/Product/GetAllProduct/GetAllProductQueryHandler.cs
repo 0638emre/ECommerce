@@ -1,15 +1,18 @@
 ﻿using ECommerce.Application.Repositories.ProductRepository;
 using ECommerce.Application.RequestParameters;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace ECommerce.Application.Features.Queries.Product.GetAllProduct
 {
     public class GetAllProductQueryHandler: IRequestHandler<GetAllProductQueryRequest, GetAllProductQueryResponse>
     {
         readonly IProductReadRepository _productReadRepository;
-        public GetAllProductQueryHandler(IProductReadRepository productReadRepository)
+        readonly ILogger<GetAllProductQueryHandler> _logger;
+        public GetAllProductQueryHandler(IProductReadRepository productReadRepository, ILogger<GetAllProductQueryHandler> logger)
         {
             _productReadRepository = productReadRepository;
+            _logger = logger;
         }
         public async Task<GetAllProductQueryResponse> Handle(GetAllProductQueryRequest request, CancellationToken cancellationToken)
         {
@@ -26,6 +29,8 @@ namespace ECommerce.Application.Features.Queries.Product.GetAllProduct
                     p.CreatedDate,
                     p.UpdatedDate
                 }).ToList();
+
+            _logger.LogInformation("Ürünler listelendi.");
 
             return new()
             {
