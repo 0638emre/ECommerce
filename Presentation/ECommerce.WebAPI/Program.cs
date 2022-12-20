@@ -6,7 +6,9 @@ using ECommerce.Infrastructure;
 using ECommerce.Infrastructure.Filters;
 using ECommerce.Infrastructure.Services.Storage.Azure;
 using ECommerce.Persistance;
+using ECommerce.SignalR;
 using ECommerce.WebAPI.Configurations;
+using ECommerce.WebAPI.Extensions;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpLogging;
@@ -60,6 +62,7 @@ builder.Services.AddPersistanceServices(builder.Configuration);
 //AddPersistanceServices taraf�m�zdan extension metot olarak persistance katman� alt�nda yaz�ld�. Buradaki ama� api katman�nda istedi�imiz bir servisi �a��rarak kullanmak-
 builder.Services.AddInfrastructureServices();
 builder.Services.AddApplicationServices();
+builder.Services.AddSignalRServices();
 
 //builder.Services.Add(StorageType.Azure);
 //builder.Services.AddStorage(ECommerce.Infrastructure.Enums.StorageType.Local); // bu �ekilde de mimari ne ile �al��acaksa storage olarak onu enum �zerinden se�ebiliriz.
@@ -137,9 +140,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
-app.UseHttpLogging();
-
+app.ConfigureExceptionHandler<Program>(app.Services.GetRequiredService<ILogger<Program>>());
 app.UseStaticFiles();
 
 app.UseSerilogRequestLogging(); //bunun üstünde yazılan appler loglanmayacak sonrakiler loglanacak.
@@ -158,5 +159,7 @@ app.Use(async (context, next) =>
 });
 
 app.MapControllers();
+
+app.MapHubs();
 
 app.Run();
