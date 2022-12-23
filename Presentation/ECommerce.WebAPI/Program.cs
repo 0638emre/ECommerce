@@ -21,7 +21,21 @@ using Serilog.Core;
 using Serilog.Sinks.PostgreSQL;
 
 var builder = WebApplication.CreateBuilder(args);
-//IOC Container
+
+builder.Services.AddHttpContextAccessor();//client dan gelen req neticesinde oluşturulan httpconttext nesnesine katmanlardaki classlar üzerinden (bussiness logic) erişebilmemizi sağlar.
+
+//IOCler
+builder.Services.AddPersistanceServices(builder.Configuration);
+//AddPersistanceServices taraf�m�zdan extension metot olarak persistance katman� alt�nda yaz�ld�. Buradaki ama� api katman�nda istedi�imiz bir servisi �a��rarak kullanmak-
+builder.Services.AddInfrastructureServices();
+builder.Services.AddApplicationServices();
+builder.Services.AddSignalRServices();
+
+//builder.Services.Add(StorageType.Azure);
+//builder.Services.AddStorage(ECommerce.Infrastructure.Enums.StorageType.Local); // bu �ekilde de mimari ne ile �al��acaksa storage olarak onu enum �zerinden se�ebiliriz.
+//builder.Services.AddStorage<LocalStorage>();
+builder.Services.AddStorage<AzureStorage>();
+
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
     policy.WithOrigins("http://localhost:4401", "https://localhost:4401", "http://localhost:4200", "https://localhost:4200").AllowAnyHeader().AllowAnyMethod().AllowCredentials()
 ));
@@ -57,17 +71,7 @@ builder.Services.AddHttpLogging(logging =>
     logging.ResponseBodyLogLimit = 4096;
 });
 
-//IOCler
-builder.Services.AddPersistanceServices(builder.Configuration);
-//AddPersistanceServices taraf�m�zdan extension metot olarak persistance katman� alt�nda yaz�ld�. Buradaki ama� api katman�nda istedi�imiz bir servisi �a��rarak kullanmak-
-builder.Services.AddInfrastructureServices();
-builder.Services.AddApplicationServices();
-builder.Services.AddSignalRServices();
 
-//builder.Services.Add(StorageType.Azure);
-//builder.Services.AddStorage(ECommerce.Infrastructure.Enums.StorageType.Local); // bu �ekilde de mimari ne ile �al��acaksa storage olarak onu enum �zerinden se�ebiliriz.
-//builder.Services.AddStorage<LocalStorage>();
-builder.Services.AddStorage<AzureStorage>();
 
 
 builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>())

@@ -10,12 +10,12 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
+using ECommerce.Application.Features.Commands.ProductImageFile.ChangeShowCaseImage;
 
 namespace ECommerce.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = "Admin")] //login olmuş mu bu kullanıcı yetkisi var mı bunu kontrol ederiz. 200 ok. 401 unauthrize 
     public class ProductsController : ControllerBase
     {
         readonly IMediator _mediator;
@@ -41,6 +41,7 @@ namespace ECommerce.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = "Admin")] //login olmuş mu bu kullanıcı yetkisi var mı bunu kontrol ederiz. 200 ok. 401 unauthrize 
         public async Task<IActionResult> AddProduct(CreateProductCommandRequest createProductCommandRequest)
         {
             CreateProductCommandResponse response = await _mediator.Send(createProductCommandRequest);
@@ -49,6 +50,8 @@ namespace ECommerce.WebAPI.Controllers
         }
 
         [HttpPut]
+        [Authorize(AuthenticationSchemes = "Admin")] //login olmuş mu bu kullanıcı yetkisi var mı bunu kontrol ederiz. 200 ok. 401 unauthrize 
+        [Authorize(AuthenticationSchemes = "Admin")] //login olmuş mu bu kullanıcı yetkisi var mı bunu kontrol ederiz. 200 ok. 401 unauthrize 
         public async Task<IActionResult> UpdateProduct([FromBody] UpdateProductCommandRequest updateProductCommandRequest)
         {
             UpdateProductCommandResponse response = await _mediator.Send(updateProductCommandRequest);
@@ -57,6 +60,7 @@ namespace ECommerce.WebAPI.Controllers
         }
 
         [HttpDelete("{Id}")]
+        [Authorize(AuthenticationSchemes = "Admin")] //login olmuş mu bu kullanıcı yetkisi var mı bunu kontrol ederiz. 200 ok. 401 unauthrize 
         public async Task<IActionResult> Delete([FromRoute] RemoveProductCommandRequest removeProductCommandRequest)
         {
             RemoveProductCommandResponse response = await _mediator.Send(removeProductCommandRequest);
@@ -65,6 +69,7 @@ namespace ECommerce.WebAPI.Controllers
         }
 
         [HttpPost("[action]")]
+        [Authorize(AuthenticationSchemes = "Admin")] //login olmuş mu bu kullanıcı yetkisi var mı bunu kontrol ederiz. 200 ok. 401 unauthrize 
         public async Task<IActionResult> Upload([FromQuery] UploadProductImageCommandRequest uploadProductImageCommandRequest)
         {
             uploadProductImageCommandRequest.Files = Request.Form.Files;
@@ -82,12 +87,20 @@ namespace ECommerce.WebAPI.Controllers
         }
 
         [HttpDelete("[action]/{Id}")]
+        [Authorize(AuthenticationSchemes = "Admin")] //login olmuş mu bu kullanıcı yetkisi var mı bunu kontrol ederiz. 200 ok. 401 unauthrize 
         public async Task<IActionResult> DeleteProductImage([FromRoute]RemoveProductImageCommandRequest removeProductImageCommandRequest, [FromQuery] string imageId)
         {
             removeProductImageCommandRequest.ImageId = imageId;
             RemoveProductImageCommandResponse response = await _mediator.Send(removeProductImageCommandRequest);
 
             return Ok();
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> ChangeShowcase([FromQuery] ChangeShowCaseImageCommandRequest changeShowCaseImageCommandRequest)
+        {
+            ChangeShowCaseImageCommandResponse response=await  _mediator.Send(changeShowCaseImageCommandRequest);
+            return Ok(response);
         }
 
     }

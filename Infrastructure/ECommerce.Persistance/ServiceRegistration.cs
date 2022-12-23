@@ -23,6 +23,10 @@ using ECommerce.Persistance.Repositories.EndpointRepository;
 using ECommerce.Persistance.Repositories.InvoiceFileRepository;
 using ECommerce.Persistance.Repositories.MenuRepository;
 using ECommerce.Persistance.Services;
+using ECommerce.Application.Repositories.BasketItemRepository;
+using ECommerce.Application.Repositories.BasketRepository;
+using ECommerce.Persistance.Repositories.BasketItemRepository;
+using ECommerce.Persistance.Repositories.BasketRepository;
 
 namespace ECommerce.Persistance
 {
@@ -56,10 +60,10 @@ namespace ECommerce.Persistance
             services.AddScoped<IProductImageFileWriteRepository, ProductImageWriteRepository>();
             services.AddScoped<IInvoiceFileReadRepository, InvoiceFileReadRepository>();
             services.AddScoped<IInvoiceFileWriteRepository, InvoiceFileWriteRepository>();
-            // services.AddScoped<IBasketItemReadRepository, BasketItemReadRepository>();
-            // services.AddScoped<IBasketItemWriteRepository, BasketItemWriteRepository>();
-            // services.AddScoped<IBasketReadRepository, BasketReadRepository>();
-            // services.AddScoped<IBasketWriteRepository, BasketWriteRepository>();
+            services.AddScoped<IBasketItemReadRepository, BasketItemReadRepository>();
+            services.AddScoped<IBasketItemWriteRepository, BasketItemWriteRepository>();
+            services.AddScoped<IBasketReadRepository, BasketReadRepository>();
+            services.AddScoped<IBasketWriteRepository, BasketWriteRepository>();
             // services.AddScoped<ICompletedOrderReadRepository, CompletedOrderReadRepository>();
             // services.AddScoped<ICompletedOrderWriteRepository, CompletedOrderWriteRepository>();
             services.AddScoped<IEndpointReadRepository, EndpointReadRepository>();
@@ -75,7 +79,7 @@ namespace ECommerce.Persistance
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IExternalAuthentication, AuthService>();
             services.AddScoped<IInternalAuthentication, AuthService>();
-            // services.AddScoped<IBasketService, BasketService>();
+            services.AddScoped<IBasketService, BasketService>();
             // services.AddScoped<IOrderService, OrderService>();
             // services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IAuthorizationEndpointService, AuthorizationEndpointService>();
