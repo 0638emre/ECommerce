@@ -1,4 +1,4 @@
-﻿using ECommerce.Application.Abstraction.Services;
+﻿using ECommerce.Application.Abstractions.Services;
 using ECommerce.Application.DTOs.User;
 using ECommerce.Application.Exceptions;
 using ECommerce.Application.Repositories.EndpointRepository;

@@ -1,4 +1,4 @@
-﻿using ECommerce.Application.Abstraction;
+﻿using ECommerce.Application.Abstractions;
 using MediatR;
 
 namespace ECommerce.Application.Features.Commands.AppUser.GoogleLogin

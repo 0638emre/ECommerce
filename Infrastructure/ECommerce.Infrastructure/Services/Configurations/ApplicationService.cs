@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using ECommerce.Application.Abstraction.Services.Configurations;
+using ECommerce.Application.Abstractions.Services.Configurations;
 using ECommerce.Application.CustomAttributes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

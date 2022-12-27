@@ -1,4 +1,4 @@
-﻿using ECommerce.Application.Abstraction.Storage.Local;
+﻿using ECommerce.Application.Abstractions.Storage.Local;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.IO;

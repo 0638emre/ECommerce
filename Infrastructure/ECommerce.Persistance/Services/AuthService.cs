@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
-using ECommerce.Application.Abstraction;
-using ECommerce.Application.Abstraction.Services;
-using ECommerce.Application.Abstraction.Token;
+using ECommerce.Application.Abstractions;
+using ECommerce.Application.Abstractions.Services;
+using ECommerce.Application.Abstractions.Token;
 using ECommerce.Application.DTOs;
 using ECommerce.Application.DTOs.Facebook;
 using ECommerce.Application.Exceptions;

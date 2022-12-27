@@ -3,21 +3,28 @@ using ECommerce.Application.Features.Commands.Basket.AddItemToBasket;
 using ECommerce.Application.Features.Commands.Basket.RemoveBasketItem;
 using ECommerce.Application.Features.Commands.Basket.UpdateQuantity;
 using ECommerce.Application.Features.Queries.Basket.GetBasketItems;
+//using ECommerce.Application.Consts;
+using ECommerce.Application.CustomAttributes;
+using ECommerce.Application.Enums;
+using ECommerce.Application.Features.Commands.Basket.AddItemToBasket;
+using ECommerce.Application.Features.Commands.Basket.RemoveBasketItem;
+using ECommerce.Application.Features.Commands.Basket.UpdateQuantity;
+using ECommerce.Application.Features.Queries.Basket.GetBasketItems;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ECommerce.WebAPI.Controllers
+namespace ETicaretAPI.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = "Admin")]
-    public class BasketController : ControllerBase
+    public class BasketsController : ControllerBase
     {
         readonly IMediator _mediator;
 
-        public BasketController(IMediator mediator)
+        public BasketsController(IMediator mediator)
         {
             _mediator = mediator;
         }

@@ -1,6 +1,6 @@
-﻿using ECommerce.Application.Abstraction.Services.Authentications;
+﻿using ECommerce.Application.Abstractions.Services.Authentications;
 
-namespace ECommerce.Application.Abstraction;
+namespace ECommerce.Application.Abstractions;
 
 public interface IAuthService : IExternalAuthentication, IInternalAuthentication
 {

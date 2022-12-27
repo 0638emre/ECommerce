@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Application.Abstraction.Services;
+﻿namespace ECommerce.Application.Abstractions.Services;
 
 public interface IAuthorizationEndpointService
 {

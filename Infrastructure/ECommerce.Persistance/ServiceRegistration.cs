@@ -1,10 +1,9 @@
-﻿using ECommerce.Application.Abstraction;
-using ECommerce.Application.Abstraction.Services;
-using ECommerce.Application.Abstraction.Services.Authentications;
+﻿using ECommerce.Application.Abstractions;
+using ECommerce.Application.Abstractions.Services;
+using ECommerce.Application.Abstractions.Services.Authentications;
 using ECommerce.Persistance.Contexts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using ECommerce.Persistance.Repositories.CustomerRepository;
 using ECommerce.Application.Repositories.CustomerRepository;
 using ECommerce.Application.Repositories.EndpointRepository;
@@ -27,12 +26,14 @@ using ECommerce.Application.Repositories.BasketItemRepository;
 using ECommerce.Application.Repositories.BasketRepository;
 using ECommerce.Persistance.Repositories.BasketItemRepository;
 using ECommerce.Persistance.Repositories.BasketRepository;
+using ECommerce.Persistence.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace ECommerce.Persistance
 {
     public static class ServiceRegistration
     {
-        public static void AddPersistanceServices(this IServiceCollection services, IConfiguration configuration)
+        public static void AddPersistanceServices(this IServiceCollection services)
         {
             //burada hangi db yi kullanacaksak onunla ilgili kütüphaneyi yüklememiz gerekiyor. Postgre ise postgre , mssql ise mssql, mongo ise mongo gibi.
             services.AddDbContext<ECommerceAPIDbContext>(options => 
@@ -45,7 +46,8 @@ namespace ECommerce.Persistance
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
-            }).AddEntityFrameworkStores<ECommerceAPIDbContext>(); 
+            }).AddEntityFrameworkStores<ECommerceAPIDbContext>()
+             .AddDefaultTokenProviders();
             //Identity mekanizmasına dair tüm store işlerini buradan yürüt. Ve Asp.net.Identity nin kendine ait validationları vardır. Option ile kendimize göre onu configure ederiz.
 
             services.AddScoped<ICustomerReadRepository, CustomerReadRepository>();

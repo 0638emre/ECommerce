@@ -1,4 +1,4 @@
-﻿using ECommerce.Application.Abstraction.Hubs;
+﻿using ECommerce.Application.Abstractions.Hubs;
 using ECommerce.SignalR.HubServices;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;

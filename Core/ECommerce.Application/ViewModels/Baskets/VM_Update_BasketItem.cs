@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Application.ViewModels.Basket
+﻿namespace ECommerce.Application.ViewModels.Baskets
 {
     public class VM_Update_BasketItem
     {

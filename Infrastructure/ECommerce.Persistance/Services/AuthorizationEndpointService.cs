@@ -1,5 +1,5 @@
-﻿using ECommerce.Application.Abstraction.Services;
-using ECommerce.Application.Abstraction.Services.Configurations;
+﻿using ECommerce.Application.Abstractions.Services;
+using ECommerce.Application.Abstractions.Services.Configurations;
 using ECommerce.Application.Repositories.EndpointRepository;
 using ECommerce.Application.Repositories.MenuRepository;
 using ECommerce.Domain.Entities;

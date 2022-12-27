@@ -1,7 +1,7 @@
-﻿using ECommerce.Application.ViewModels.Basket;
+﻿using ECommerce.Application.ViewModels.Baskets;
 using ECommerce.Domain.Entities;
 
-namespace ECommerce.Application.Abstraction.Services
+namespace ECommerce.Application.Abstractions.Services
 {
     public interface IBasketService
     {
@@ -9,5 +9,6 @@ namespace ECommerce.Application.Abstraction.Services
         public Task AddItemToBasketAsync(VM_Create_BasketItem basketItem);
         public Task UpdateQuantityAsync(VM_Update_BasketItem basketItem);
         public Task RemoveBasketItemAsync(string basketItemId);
+        public Basket? GetUserActiveBasket { get; }
     }
 }

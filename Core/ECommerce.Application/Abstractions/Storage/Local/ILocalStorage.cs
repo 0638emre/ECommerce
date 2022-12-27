@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace ECommerce.Application.Abstraction.Storage.Local
+namespace ECommerce.Application.Abstractions.Storage.Local
 {
     public interface ILocalStorage:IStorage
     {

@@ -1,6 +1,6 @@
 ﻿using ECommerce.Domain.Entities.Identity;
 
-namespace ECommerce.Application.Abstraction.Token
+namespace ECommerce.Application.Abstractions.Token
 {
     //burada token ve refresh token üretiminden sorumlu servisin interfaceini yapıyoruz.
     public interface ITokenHandler

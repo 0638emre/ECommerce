@@ -1,6 +1,6 @@
-﻿using ECommerce.Application.Abstraction.Services.Configurations;
-using ECommerce.Application.Abstraction.Storage;
-using ECommerce.Application.Abstraction.Token;
+﻿using ECommerce.Application.Abstractions.Services.Configurations;
+using ECommerce.Application.Abstractions.Storage;
+using ECommerce.Application.Abstractions.Token;
 using ECommerce.Infrastructure.Enums;
 using ECommerce.Infrastructure.Services.Configurations;
 using ECommerce.Infrastructure.Services.Storage;

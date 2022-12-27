@@ -1,7 +1,7 @@
 ﻿using ECommerce.Application.Repositories.ProductRepository;
 using MediatR;
 using System.Net;
-using ECommerce.Application.Abstraction.Hubs;
+using ECommerce.Application.Abstractions.Hubs;
 
 namespace ECommerce.Application.Features.Commands.Product.CreateProduct
 {

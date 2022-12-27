@@ -1,7 +1,7 @@
 ﻿using ECommerce.Application.DTOs.User;
 using ECommerce.Domain.Entities.Identity;
 
-namespace ECommerce.Application.Abstraction.Services;
+namespace ECommerce.Application.Abstractions.Services;
 
 public interface IUserService
 {

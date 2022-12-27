@@ -1,5 +1,5 @@
-﻿using ECommerce.Application.Abstraction;
-using ECommerce.Application.Abstraction.Token;
+﻿using ECommerce.Application.Abstractions;
+using ECommerce.Application.Abstractions.Token;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 

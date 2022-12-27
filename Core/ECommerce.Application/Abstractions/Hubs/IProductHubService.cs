@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Application.Abstraction.Hubs;
+﻿namespace ECommerce.Application.Abstractions.Hubs;
 
 public interface IProductHubService
 {

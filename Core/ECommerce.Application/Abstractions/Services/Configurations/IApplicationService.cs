@@ -1,6 +1,6 @@
 ﻿using ECommerce.Application.DTOs.Configuration;
 
-namespace ECommerce.Application.Abstraction.Services.Configurations;
+namespace ECommerce.Application.Abstractions.Services.Configurations;
 
 public interface IApplicationService
 {

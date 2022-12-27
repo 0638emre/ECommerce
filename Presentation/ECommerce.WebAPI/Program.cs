@@ -25,7 +25,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpContextAccessor();//client dan gelen req neticesinde oluşturulan httpconttext nesnesine katmanlardaki classlar üzerinden (bussiness logic) erişebilmemizi sağlar.
 
 //IOCler
-builder.Services.AddPersistanceServices(builder.Configuration);
+builder.Services.AddPersistanceServices();
 //AddPersistanceServices taraf�m�zdan extension metot olarak persistance katman� alt�nda yaz�ld�. Buradaki ama� api katman�nda istedi�imiz bir servisi �a��rarak kullanmak-
 builder.Services.AddInfrastructureServices();
 builder.Services.AddApplicationServices();
@@ -91,7 +91,7 @@ builder.Services.AddSwaggerGen(option =>
     option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
-        Description = "Token aliyim :)",
+        Description = "Token pls :)",
         Name = "Authorization",
         Type = SecuritySchemeType.Http,
         BearerFormat = "JWT",
@@ -157,7 +157,7 @@ app.UseAuthorization();
 
 app.Use(async (context, next) =>
 {
-    var username = context.User.Identity?.IsAuthenticated != null || true ? context.User.Identity.Name : null;
+    var username = context.User?.Identity?.IsAuthenticated != null || true ? context.User.Identity.Name : null;
     LogContext.PushProperty("user_name", username);
     await next();
 });

@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Application.Abstraction.Services.Authentications;
+﻿namespace ECommerce.Application.Abstractions.Services.Authentications;
 
 public interface IExternalAuthentication
 {
