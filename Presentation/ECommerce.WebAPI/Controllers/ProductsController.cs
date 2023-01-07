@@ -51,7 +51,7 @@ namespace ECommerce.WebAPI.Controllers
 
         [HttpPut]
         [Authorize(AuthenticationSchemes = "Admin")] //login olmuş mu bu kullanıcı yetkisi var mı bunu kontrol ederiz. 200 ok. 401 unauthrize 
-        [Authorize(AuthenticationSchemes = "Admin")] //login olmuş mu bu kullanıcı yetkisi var mı bunu kontrol ederiz. 200 ok. 401 unauthrize 
+        //[Authorize(AuthenticationSchemes = "Admin")] //login olmuş mu bu kullanıcı yetkisi var mı bunu kontrol ederiz. 200 ok. 401 unauthrize 
         public async Task<IActionResult> UpdateProduct([FromBody] UpdateProductCommandRequest updateProductCommandRequest)
         {
             UpdateProductCommandResponse response = await _mediator.Send(updateProductCommandRequest);

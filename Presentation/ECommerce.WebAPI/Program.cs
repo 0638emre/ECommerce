@@ -5,6 +5,7 @@ using ECommerce.Application.Validators.Products;
 using ECommerce.Infrastructure;
 using ECommerce.Infrastructure.Filters;
 using ECommerce.Infrastructure.Services.Storage.Azure;
+using ECommerce.Infrastructure.Services.Storage.Local;
 using ECommerce.Persistance;
 using ECommerce.SignalR;
 using ECommerce.WebAPI.Configurations;
@@ -33,8 +34,8 @@ builder.Services.AddSignalRServices();
 
 //builder.Services.Add(StorageType.Azure);
 //builder.Services.AddStorage(ECommerce.Infrastructure.Enums.StorageType.Local); // bu �ekilde de mimari ne ile �al��acaksa storage olarak onu enum �zerinden se�ebiliriz.
-//builder.Services.AddStorage<LocalStorage>();
-builder.Services.AddStorage<AzureStorage>();
+builder.Services.AddStorage<LocalStorage>();
+//builder.Services.AddStorage<AzureStorage>();
 
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
     policy.WithOrigins("http://localhost:4401", "https://localhost:4401", "http://localhost:4200", "https://localhost:4200").AllowAnyHeader().AllowAnyMethod().AllowCredentials()
