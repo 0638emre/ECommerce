@@ -2,7 +2,7 @@
 using MediatR;
 using System.Linq;
 
-namespace ECommerce.Application.Features.Queries.Order
+namespace ECommerce.Application.Features.Queries.Order.GetAllOrders
 {
     public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQueryRequest, GetAllOrdersQueryResponse>
     {
