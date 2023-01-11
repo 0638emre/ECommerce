@@ -1,13 +1,16 @@
-﻿using System.Text.Json;
+﻿using System.Text;
+using System.Text.Json;
 using ECommerce.Application.Abstractions;
 using ECommerce.Application.Abstractions.Services;
 using ECommerce.Application.Abstractions.Token;
 using ECommerce.Application.DTOs;
 using ECommerce.Application.DTOs.Facebook;
 using ECommerce.Application.Exceptions;
+using ECommerce.Application.Helpers;
 using ECommerce.Domain.Entities.Identity;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -21,14 +24,14 @@ public class AuthService : IAuthService
     readonly ITokenHandler _tokenHandler;
     readonly SignInManager<Domain.Entities.Identity.AppUser> _signInManager;
     readonly IUserService _userService;
-    // readonly IMailService _mailService;
+    readonly IMailService _mailService;
     public AuthService(IHttpClientFactory httpClientFactory,
         IConfiguration configuration,
         UserManager<Domain.Entities.Identity.AppUser> userManager,
         ITokenHandler tokenHandler,
         SignInManager<AppUser> signInManager,
-        IUserService userService
-        // IMailService mailService
+        IUserService userService,
+        IMailService mailService
         )
     {
         _httpClient = httpClientFactory.CreateClient();
@@ -141,13 +144,31 @@ public class AuthService : IAuthService
             throw new NotFoundUserException();
     }
 
-    public Task PasswordResetAsnyc(string email)
+    public async Task PasswordResetAsnyc(string email)
     {
-        throw new NotImplementedException();
+        AppUser user = await _userManager.FindByEmailAsync(email);
+
+        if (user != null)
+        {
+            string resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            resetToken = resetToken.UrlEncode();
+
+            await _mailService.SendPasswordResetMailAsync(email, user.Id, resetToken);
+        }
     }
 
-    public Task<bool> VerifyResetTokenAsync(string resetToken, string userId)
+    public async Task<bool> VerifyResetTokenAsync(string resetToken, string userId)
     {
-        throw new NotImplementedException();
+        AppUser user = await _userManager.FindByIdAsync(userId);
+
+        if (user != null)
+        {
+            resetToken = resetToken.UrlDecode();
+
+            return await _userManager.VerifyUserTokenAsync(user, _userManager.Options.Tokens.PasswordResetTokenProvider, "ResetPassword", resetToken);
+        }
+
+        return false;
     }
 }

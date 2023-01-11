@@ -47,7 +47,7 @@ namespace ECommerce.Persistance
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
             }).AddEntityFrameworkStores<ECommerceAPIDbContext>()
-             .AddDefaultTokenProviders();
+             .AddDefaultTokenProviders(); //resetpasswordtoken vb metotları kullanmak için bu gerekmektedir.
             //Identity mekanizmasına dair tüm store işlerini buradan yürüt. Ve Asp.net.Identity nin kendine ait validationları vardır. Option ile kendimize göre onu configure ederiz.
 
             services.AddScoped<ICustomerReadRepository, CustomerReadRepository>();
