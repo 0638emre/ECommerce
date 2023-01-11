@@ -2,7 +2,7 @@
 
 public class PasswordChangeFailedException : Exception
 {
-    public PasswordChangeFailedException() : base("Şifre güncellenirken bir sorun oluştu.")
+    public PasswordChangeFailedException() : base("Şifre güncellenirken hata oluştu.")
     {
     }
 

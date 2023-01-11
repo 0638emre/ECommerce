@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.WebUtilities;
 using ECommerce.Application.Repositories;
+using ECommerce.Application.Helpers;
 
 namespace ECommerce.Persistance.Services;
 
@@ -56,17 +57,17 @@ public class UserService: IUserService
         }
         public async Task UpdatePasswordAsync(string userId, string resetToken, string newPassword)
         {
-            // AppUser user = await _userManager.FindByIdAsync(userId);
-            // if (user != null)
-            // {
-            //     resetToken = resetToken.UrlDecode();
-            //     IdentityResult result = await _userManager.ResetPasswordAsync(user, resetToken, newPassword);
-            //     if (result.Succeeded)
-            //         await _userManager.UpdateSecurityStampAsync(user);
-            //     else
-            //         throw new PasswordChangeFailedException();
-            // }
+        AppUser user = await _userManager.FindByIdAsync(userId);
+        if (user != null)
+        {
+            resetToken = resetToken.UrlDecode();
+            IdentityResult result = await _userManager.ResetPasswordAsync(user, resetToken, newPassword);
+            if (result.Succeeded)
+                await _userManager.UpdateSecurityStampAsync(user);
+            else
+                throw new PasswordChangeFailedException();
         }
+    }
         public async Task<List<ListUser>> GetAllUsersAsync(int page, int size)
         {
             var users = await _userManager.Users
