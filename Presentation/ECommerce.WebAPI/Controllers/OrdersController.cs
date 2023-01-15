@@ -1,4 +1,8 @@
-﻿using ECommerce.Application.Features.Commands.Order.CreateOrder;
+﻿using ECommerce.Application.Consts;
+using ECommerce.Application.CustomAttributes;
+using ECommerce.Application.Enums;
+using ECommerce.Application.Features.Commands.Order.CompleteOrder;
+using ECommerce.Application.Features.Commands.Order.CreateOrder;
 using ECommerce.Application.Features.Queries.Order.GetAllOrders;
 using ECommerce.Application.Features.Queries.Order.GetOrderById;
 using MediatR;
@@ -9,7 +13,7 @@ namespace ECommerce.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize("Admin")]
+    [Authorize(AuthenticationSchemes = "Admin")]
     public class OrdersController : ControllerBase
     {
         readonly IMediator _mediator;
@@ -20,6 +24,7 @@ namespace ECommerce.WebAPI.Controllers
         }
 
         [HttpPost]
+        [AuthorizeDefinition(Menu = AuthorizeDefinitionConstants.Orders, ActionType = ActionType.Writing, Definition = "Create Order")]
         public async Task<ActionResult> CreateOrder(CreateOrderCommandRequest createOrderCommandRequest)
         {
             CreateOrderCommandResponse response =  await _mediator.Send(createOrderCommandRequest);
@@ -28,6 +33,7 @@ namespace ECommerce.WebAPI.Controllers
         }
 
         [HttpGet]
+        [AuthorizeDefinition(Menu = AuthorizeDefinitionConstants.Orders, ActionType = ActionType.Reading, Definition = "Get All Orders")]
         public async Task<IActionResult> GetAllOrders([FromQuery] GetAllOrdersQueryRequest getAllOrdersQueryRequest)
         {
             GetAllOrdersQueryResponse response = await _mediator.Send(getAllOrdersQueryRequest);
@@ -36,10 +42,18 @@ namespace ECommerce.WebAPI.Controllers
         }
 
         [HttpGet("{Id}")]
+        [AuthorizeDefinition(Menu = AuthorizeDefinitionConstants.Orders, ActionType = ActionType.Reading, Definition = "Get Order By Id")]
         public async Task<IActionResult> GetOrderById([FromRoute] GetOrderByIdQueryRequest getOrderByIdQueryRequest)
         {
             GetOrderByIdQueryResponse response = await _mediator.Send(getOrderByIdQueryRequest);
 
+            return Ok(response);
+        }
+        [HttpGet("complete-order/{Id}")]
+        [AuthorizeDefinition(Menu = AuthorizeDefinitionConstants.Orders, ActionType = ActionType.Updating, Definition = "Complete Order")]
+        public async Task<ActionResult> CompleteOrder([FromRoute] CompleteOrderCommandRequest completeOrderCommandRequest)
+        {
+            CompleteOrderCommandResponse response = await _mediator.Send(completeOrderCommandRequest);
             return Ok(response);
         }
     }

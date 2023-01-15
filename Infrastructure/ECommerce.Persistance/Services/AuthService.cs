@@ -111,7 +111,6 @@ public class AuthService : IAuthService
         return await CreateUserExternalAsync(user, payload.Email, payload.Name, info, accessTokenLifeTime);
     }
 
-
     public async Task<Token> LoginAsync(string usernameOrEmail, string password, int accessTokenLifeTime)
     {
         Domain.Entities.Identity.AppUser user = await _userManager.FindByNameAsync(usernameOrEmail);
@@ -154,7 +153,7 @@ public class AuthService : IAuthService
 
             resetToken = resetToken.UrlEncode();
 
-            await _mailService.SendPasswordResetMailAsync(email, user.Id, resetToken);
+            await _mailService.SendMailAsync(email, user.Id, resetToken);
         }
     }
 
