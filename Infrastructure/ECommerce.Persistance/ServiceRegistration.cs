@@ -28,6 +28,8 @@ using ECommerce.Persistance.Repositories.BasketItemRepository;
 using ECommerce.Persistance.Repositories.BasketRepository;
 using ECommerce.Persistence.Services;
 using Microsoft.AspNetCore.Identity;
+using ECommerce.Application.Repositories.CompleteOrderRepository;
+using ECommerce.Persistance.Repositories;
 
 namespace ECommerce.Persistance
 {
@@ -66,8 +68,8 @@ namespace ECommerce.Persistance
             services.AddScoped<IBasketItemWriteRepository, BasketItemWriteRepository>();
             services.AddScoped<IBasketReadRepository, BasketReadRepository>();
             services.AddScoped<IBasketWriteRepository, BasketWriteRepository>();
-            // services.AddScoped<ICompletedOrderReadRepository, CompletedOrderReadRepository>();
-            // services.AddScoped<ICompletedOrderWriteRepository, CompletedOrderWriteRepository>();
+            services.AddScoped<ICompletedOrderReadRepository, CompletedOrderReadRepository>();
+            services.AddScoped<ICompletedOrderWriteRepository, CompletedOrderWriteRepository>();
             services.AddScoped<IEndpointReadRepository, EndpointReadRepository>();
             services.AddScoped<IEndpointWriteRepository, EndpointWriteRepository>();
             services.AddScoped<IMenuReadRepository, MenuReadRepository>();
