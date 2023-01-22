@@ -29,7 +29,7 @@ namespace ECommerce.Persistance.Contexts
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Order>()
-                            .HasKey(b => b.Id);
+              .HasKey(b => b.Id);
 
             builder.Entity<Order>()
                 .HasIndex(o => o.OrderCode)

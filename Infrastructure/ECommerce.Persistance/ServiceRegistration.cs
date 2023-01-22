@@ -78,7 +78,7 @@ namespace ECommerce.Persistance
             
             
             
-            
+            services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IExternalAuthentication, AuthService>();

@@ -1,6 +1,6 @@
 ﻿namespace ECommerce.Application.Features.Queries.ProductImageFile.GetProductImage
 {
-    public class GetProductImageQueryResponse
+    public class GetProductImagesQueryResponse
     {
         public string Path { get; set; }
         public string FileName { get; set; }

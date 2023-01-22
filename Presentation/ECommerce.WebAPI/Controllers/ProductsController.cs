@@ -14,6 +14,8 @@ using ECommerce.Application.Features.Commands.ProductImageFile.ChangeShowCaseIma
 using ECommerce.Application.Consts;
 using ECommerce.Application.CustomAttributes;
 using ECommerce.Application.Enums;
+using ECommerce.Application.Abstractions.Services;
+using ECommerce.Application.Features.Commands.Product.UpdateStockQrCodeToProduct;
 
 namespace ECommerce.WebAPI.Controllers
 {
@@ -22,18 +24,36 @@ namespace ECommerce.WebAPI.Controllers
     public class ProductsController : ControllerBase
     {
         readonly IMediator _mediator;
+        readonly IProductService _productService;
 
-        public ProductsController(IMediator mediator)
+        public ProductsController(IMediator mediator, IProductService productService)
         {
             _mediator = mediator;
+            _productService = productService;
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(GetAllProductQueryResponse), (int)HttpStatusCode.OK)]
         public async Task<ActionResult> GetAllProducts([FromQuery] GetAllProductQueryRequest getAllProductQueryRequest)
         {
            GetAllProductQueryResponse response = await _mediator.Send(getAllProductQueryRequest);
 
            return Ok(value: response);
+        }
+
+        [HttpGet("qrcode/{productId}")]
+        public async Task<ActionResult> GetQRCodeToProduct([FromRoute] string productId)
+        {
+            var data = await _productService.QrCodeToProductAsync(productId);
+
+            return File(data, "image/png");
+        }
+
+        [HttpPut("qrcode")]
+        public async Task<IActionResult> UpdateStockQrCodeToProduct(UpdateStockQrCodeToProductCommandRequest updateStockQrCodeToProductCommandRequest)
+        {
+            UpdateStockQrCodeToProductCommandResponse response = await _mediator.Send(updateStockQrCodeToProductCommandRequest);
+            return Ok(response);
         }
 
         [HttpGet("{Id}")]
@@ -85,12 +105,12 @@ namespace ECommerce.WebAPI.Controllers
         }
 
         [HttpGet("[action]/{id}")]
-        [AuthorizeDefinition(Menu = AuthorizeDefinitionConstants.Products, ActionType = ActionType.Reading, Definition = "Get Product Images")]
-        public async Task<IActionResult> GetProductImages([FromRoute] GetProductImageQueryRequest getProductImageQueryRequest)
+        [Authorize(AuthenticationSchemes = "Admin")]
+        [AuthorizeDefinition(Menu = AuthorizeDefinitionConstants.Products, ActionType = ActionType.Reading, Definition = "Get Products Images")]
+        public async Task<IActionResult> GetProductImages([FromRoute] GetProductImagesQueryRequest getProductImagesQueryRequest)
         {
-            List<GetProductImageQueryResponse> response = await _mediator.Send(getProductImageQueryRequest);
-
-            return Ok(value: response);
+            List<GetProductImagesQueryResponse> response = await _mediator.Send(getProductImagesQueryRequest);
+            return Ok(response);
         }
 
         [HttpDelete("[action]/{Id}")]
@@ -105,10 +125,11 @@ namespace ECommerce.WebAPI.Controllers
         }
 
         [HttpGet("[action]")]
+        [Authorize(AuthenticationSchemes = "Admin")]
         [AuthorizeDefinition(Menu = AuthorizeDefinitionConstants.Products, ActionType = ActionType.Updating, Definition = "Change Showcase Image")]
-        public async Task<IActionResult> ChangeShowcase([FromQuery] ChangeShowCaseImageCommandRequest changeShowCaseImageCommandRequest)
+        public async Task<IActionResult> ChangeShowcaseImage([FromQuery] ChangeShowCaseImageCommandRequest changeShowcaseImageCommandRequest)
         {
-            ChangeShowCaseImageCommandResponse response=await  _mediator.Send(changeShowCaseImageCommandRequest);
+            ChangeShowCaseImageCommandResponse response = await _mediator.Send(changeShowcaseImageCommandRequest);
             return Ok(response);
         }
 

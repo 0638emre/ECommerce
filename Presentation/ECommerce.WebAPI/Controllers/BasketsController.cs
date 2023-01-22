@@ -1,5 +1,4 @@
-﻿using ECommerce.Application.Enums;
-using ECommerce.Application.Features.Commands.Basket.AddItemToBasket;
+﻿using ECommerce.Application.Features.Commands.Basket.AddItemToBasket;
 using ECommerce.Application.Features.Commands.Basket.RemoveBasketItem;
 using ECommerce.Application.Features.Commands.Basket.UpdateQuantity;
 using ECommerce.Application.Features.Queries.Basket.GetBasketItems;
@@ -8,6 +7,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ECommerce.Application.Consts;
+using ECommerce.Application.Enums;
 
 namespace ETicaretAPI.API.Controllers
 {
