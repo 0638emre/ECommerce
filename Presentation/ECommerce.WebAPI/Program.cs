@@ -83,10 +83,11 @@ internal class Program
         builder.Services.AddControllers(options =>
         {
             options.Filters.Add<ValidationFilter>();
-            options.Filters.Add<RolePermissionFilter>(); //burada da sessiondaki kullanıya ait rolleri checkleriz.
+            options.Filters.Add<RolePermissionFilter>();
         })
             .AddFluentValidation(configuration => configuration.RegisterValidatorsFromAssemblyContaining<CreateProductValidator>())
             .ConfigureApiBehaviorOptions(options => options.SuppressModelStateInvalidFilter = true);
+
         //burada fluent val. ile gelen iste�in bizim tuttu�umuz rule lara uygun olup olmad���na bakarak cliente bilgi verir. Validation application katman�nda oldu�undan oradaki herhani bir validators class vermemiz yeterli olacakt�r. di�er validator class lar� vermemize gerek yoktur. tan�r.
         //Validation Filter (infrastruxter katman�ndan devreye giriyor ki her gelen istek o filtreden ge�sin. handle olsun.)
 
@@ -165,7 +166,7 @@ internal class Program
 
         app.Use(async (context, next) =>
         {
-            var username = context.User?.Identity?.IsAuthenticated != null || true ? context.User.Identity.Name : null;
+            var username = context.User?.Identity?.IsAuthenticated != null || true ? context.User?.Identity?.Name : null;
             LogContext.PushProperty("user_name", username);
             await next();
         });
